@@ -1,0 +1,82 @@
+{
+  "agents": {
+    "architect": {
+      "model": "gemini/gemini-3.1-pro",
+      "description": "Orchestrates the entire swarm. Plans, delegates, validates evidence. Full tool access.",
+      "tools": ["*"],
+      "guardrails": {
+        "max_tool_calls": 200,
+        "max_duration_minutes": 30
+      }
+    },
+    "coder": {
+      "model": "kimi/kimi-k2.5",
+      "description": "Writes code for ONE task at a time. No task completion rights. Read-write access to src/ only.",
+      "tools": ["read", "edit", "write", "grep"],
+      "guardrails": {
+        "max_tool_calls": 500,
+        "max_duration_minutes": 60,
+        "max_failures_per_task": 5
+      },
+      "permissions": {
+        "paths": ["src/**/*", "tests/**/*"],
+        "blocked_paths": [".opencode/*", ".swarm/*", ".hive/*", ".mcp-server/*"]
+      }
+    },
+    "reviewer": {
+      "model": "anthropic/claude-sonnet-4",
+      "description": "Reviews code for correctness and security. Must use DIFFERENT model than coder to catch blind spots.",
+      "tools": ["read", "grep", "bash:secretscan", "bash:sast"],
+      "guardrails": {
+        "max_tool_calls": 100,
+        "max_duration_minutes": 15
+      }
+    },
+    "test_engineer": {
+      "model": "kimi/kimi-k2.5",
+      "description": "Writes and runs tests. Coverage must be >= 70%.",
+      "tools": ["read", "write", "edit", "bash:test"],
+      "guardrails": {
+        "max_tool_calls": 200,
+        "max_duration_minutes": 30
+      }
+    },
+    "sme": {
+      "model": "gemini/gemini-2.5-flash",
+      "description": "Domain expert. Scans codebase, provides cached guidance for specific domains (auth, api, etc.)",
+      "tools": ["read", "grep", "glob"]
+    }
+  },
+  "mcp": {
+    "servers": [
+      {
+        "name": "qa-gates-server",
+        "command": "node .mcp-server/dist/index.js",
+        "env": {
+          "BIOME_CONFIG_PATH": "./biome.json",
+          "MIN_COVERAGE": "70"
+        }
+      }
+    ]
+  },
+  "gates": {
+    "syntax_check": { "enabled": true },
+    "placeholder_scan": { "enabled": true },
+    "lint": { "enabled": true, "command": "npm run biome:check" },
+    "build_check": { "enabled": true, "command": "npm run typecheck" },
+    "security_scan": { "enabled": true, "command": "npm run security:scan" },
+    "test": { "enabled": true, "command": "npm run test", "min_coverage": 70 }
+  },
+  "state_management": {
+    "primary_source": ".hive/event-log.sqlite",
+    "projection_script": ".opencode/scripts/generate-plan.js",
+    "compaction_threshold_tokens": 120000,
+    "vector_memory": {
+      "enabled": true,
+      "provider": "ollama",
+      "model": "nomic-embed-text",
+      "endpoint": "http://127.0.0.1:11441/v1",
+      "collection": "swarm_learnings"
+    }
+  }
+}
