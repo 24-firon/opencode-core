@@ -1,8 +1,12 @@
 {
   "default_agent": "build",
   "ignore_patterns": [
-    "~/.claude/**",
-    "~/.agents/**",
+    "**/.claude/**",
+    "**/.gemini/**",
+    "**/.agents/**",
+    "**/.agent/**",
+    "**/.cursor/**",
+    "**/.roocode/**",
     "~/.config/opencode/AGENTS.md",
     "~/.config/opencode/skills/**",
     "templates/base_payload/**",
@@ -12,7 +16,7 @@
   ],
   "customInstructions": [
     "{file:./.opencode/rules/00_master_orchestrator_directive.md}",
-    "{file:./templates/base_payload/.opencode/rules/01_system_architecture.md}"
+    "{file:./.opencode/rules/01_system_architecture.md}"
   ],
   "context_management": {
     "max_file_read_tokens": 4000,
