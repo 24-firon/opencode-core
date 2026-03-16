@@ -60,7 +60,8 @@
   ],
   "customInstructions": [
     "{file:./.opencode/rules/00_master_orchestrator_directive.md}",
-    "{file:./.opencode/rules/01_system_architecture.md}"
+    "{file:./.opencode/rules/01_system_architecture.md}",
+    "{file:./.opencode/rules/02_omega_constitution.md}"
   ],
   "context_management": {
     "max_file_read_tokens": 4000,
