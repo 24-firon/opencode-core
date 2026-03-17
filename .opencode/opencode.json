@@ -61,7 +61,9 @@
   "customInstructions": [
     "{file:./.opencode/rules/00_master_orchestrator_directive.md}",
     "{file:./.opencode/rules/01_system_architecture.md}",
-    "{file:./.opencode/rules/02_omega_constitution.md}"
+    "{file:./.opencode/rules/02_omega_constitution.md}",
+    "{file:./.opencode/rules/07_orchestration_and_sub_agents.md}",
+    "{file:./.opencode/rules/08_engineering_standard_workflow.md}"
   ],
   "context_management": {
     "max_file_read_tokens": 4000,
