@@ -37,3 +37,8 @@
 - **Single Responsibility:** Files and functions should do one thing. If a file exceeds 300 lines, consider refactoring.
 - **SLC Pattern:** Single Layer Component - one component per file.
 - **No Hardcoded Values:** Move configuration variables, URLs, and magic numbers into configuration files or environment variables.
+
+## 7. The BOM-Parser Strict Ban
+- **VERBOT:** Verwende niemals einfache Regex-Patterns (wie `^---`), um YAML-Frontmatter in Markdown-Dateien zu parsen oder abzuschneiden.
+- **WARUM:** Unsichtbare Windows-BOM-Zeichen (`\ufeff`) am Anfang von Dateien zerstören Regex-Matches. Dies führt zum Totalverlust von Metadaten.
+- **LÖSUNG:** Nutze zwingend dedizierte AST-Parser oder Bibliotheken wie `gray-matter`, die BOM-safes Parsing garantieren.

@@ -1,0 +1,29 @@
+{
+  "ignore_patterns": [
+    "**/.claude/**",
+    "**/.gemini/**",
+    "**/.agents/**",
+    "**/.agent/**",
+    "**/.cursor/**",
+    "**/.roocode/**",
+    "**/.codebuddy/**",
+    "**/.commandcode/**",
+    "**/.continue/**",
+    "**/.crush/**",
+    "**/.factory/**",
+    "**/.goose/**",
+    "**/.kilocode/**",
+    "**/.kiro/**",
+    "**/.mcpjam/**",
+    "**/.mux/**",
+    "**/.neovate/**",
+    "**/.openhands/**",
+    "**/.pi/**",
+    "**/.qoder/**",
+    "**/.qwen/**",
+    "**/.roo/**",
+    "**/.trae/**",
+    "**/.windsurf/**",
+    "**/.zencoder/**"
+  ]
+}
