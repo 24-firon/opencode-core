@@ -20,7 +20,37 @@
       },
       "permissions": {
         "paths": ["src/**/*", "tests/**/*"],
-        "blocked_paths": [".opencode/*", ".swarm/*", ".hive/*", ".mcp-server/*"]
+        "blocked_paths": [
+          ".opencode/*",
+          ".swarm/*",
+          ".hive/*",
+          ".mcp-server/*",
+          "**/.claude/**",
+          "**/.gemini/**",
+          "**/.agents/**",
+          "**/.agent/**",
+          "**/.cursor/**",
+          "**/.roocode/**",
+          "**/.codebuddy/**",
+          "**/.commandcode/**",
+          "**/.continue/**",
+          "**/.crush/**",
+          "**/.factory/**",
+          "**/.goose/**",
+          "**/.kilocode/**",
+          "**/.kiro/**",
+          "**/.mcpjam/**",
+          "**/.mux/**",
+          "**/.neovate/**",
+          "**/.openhands/**",
+          "**/.pi/**",
+          "**/.qoder/**",
+          "**/.qwen/**",
+          "**/.roo/**",
+          "**/.trae/**",
+          "**/.windsurf/**",
+          "**/.zencoder/**"
+        ]
       }
     },
     "reviewer": {
