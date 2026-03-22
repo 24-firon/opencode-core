@@ -1,0 +1,92 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "architect",
+  "watcher": {
+    "ignore": [
+      "**/.agents/**",
+      "**/.claude/**",
+      "**/.cursor/**",
+      "**/.hive/**",
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/*.lock",
+      "~/.config/opencode/AGENTS.md",
+      "~/.config/opencode/skills/**"
+    ]
+  },
+  "search": {
+    "exclude": [
+      "**/.opencode/rules/**"
+    ]
+  },
+  "mcp": {
+    "qa-gates": {
+      "command": "node",
+      "args": [
+        "./.mcp-server/dist/index.js"
+      ],
+      "env": {
+        "BIOME_CONFIG_PATH": ".biome.json",
+        "MIN_COVERAGE": "70"
+      },
+      "enabled": true,
+      "type": "local"
+    }
+  },
+  "agents": {
+    "architect": {
+      "mode": "primary",
+      "model": "google/gemini-3.1-pro",
+      "prompt": "./AGENTS-7.md",
+      "instructions": [
+        "DU BIST DER ORCHESTRATOR. Führe selbst keinen Code aus, sondern delegiere an die Subagenten 'coder', 'tester', 'reviewer' und 'sme'.",
+        "Lies immer zuerst .opencode/knowledge/BRAINUPLOAD.md",
+        "Nutze das 'delegate' Tool, um spezifische Aufgaben weiterzugeben."
+      ]
+    },
+    "coder": {
+      "mode": "subagent",
+      "hidden": true,
+      "model": "provider-name/kimi-k2.5",
+      "prompt": "./AGENTS-7.md",
+      "instructions": [
+        "REGEL: Du darfst NUR in der Zone 2 (src/wip) arbeiten. Das Originalverzeichnis (src/) bleibt absolut unberührt.",
+        "Wenn du fertig bist, melde dem Architect Vollzug. Rufe KEIN Merge-Skript selbst auf."
+      ]
+    },
+    "tester": {
+      "mode": "subagent",
+      "hidden": true,
+      "model": "provider-name/kimi-k2.5",
+      "prompt": "./AGENTS-7.md",
+      "instructions": [
+        "Schreibe und repariere Tests im Ordner tests/.",
+        "Nutze das MCP Tool 'run_gate_test', um die Suite auszuführen. Die Coverage MUSS >70% sein."
+      ]
+    },
+    "reviewer": {
+      "mode": "subagent",
+      "hidden": true,
+      "model": "anthropic/claude-sonnet-4-5",
+      "prompt": "./AGENTS-7.md",
+      "instructions": [
+        "Nutze die MCP Tools 'run_gate_lint', 'run_gate_build' und 'run_gate_security'.",
+        "Reviewe den Code in src/wip auf Basis der Ergebnisse.",
+        "Wenn alle Gates passen, nutze das Tool 'run_terminal_command', um 'bash ops/scripts/merge_wip.sh' auszuführen."
+      ]
+    },
+    "sme": {
+      "mode": "subagent",
+      "hidden": true,
+      "model": "google/gemini-2.5-flash",
+      "instructions": [
+        "Du bist der Domain Expert. Analysiere das Projekt mit 'read_file' und 'grep', um dem Architect spezifisches Domänenwissen zu liefern."
+      ]
+    }
+  },
+  "context_management": {
+    "max_file_read_tokens": 4000,
+    "auto_prune_history": true
+  },
+  "enable_interactive_prompting": true
+}
