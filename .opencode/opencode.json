@@ -56,10 +56,12 @@
       "**/.zencoder/**",
       "~/.config/opencode/AGENTS.md",
       "~/.config/opencode/skills/**",
-      "templates/base_payload/**",
-      "node_modules/**",
-      "dist/**",
-      "**/*.lock"
-    ]
+"templates/base_payload/**",
+  "docs/archive/**",
+  "docs/learnings/**",
+  "node_modules/**",
+  "dist/**",
+  "**/*.lock"
+  ]
   }
 }

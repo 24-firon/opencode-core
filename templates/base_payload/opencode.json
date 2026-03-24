@@ -13,9 +13,11 @@
       "plans/**",
       "**/*.lock",
       "package-lock.json",
-      ".hive/**",
-      ".swarm/**",
-      "_TASKS/**"
-    ]
+".hive/**",
+  ".swarm/**",
+  "_TASKS/**",
+  "docs/archive/**",
+  "docs/learnings/**"
+  ]
   }
 }
