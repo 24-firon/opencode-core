@@ -15,7 +15,7 @@ Wenn der User dich anweist, ein neues Repository mit OpenCode zu bestücken, bef
 2. **Playground Construction:**
    - Kopiere das Master-Template aus `./templates/base_payload/` in einen neuen, isolierten Ordner unter `./templates/playgrounds/<repo-name>-setup/`.
    - Modifiziere die `opencode.json` und die `.opencode/rules/` im Playground *basierend auf den Erkenntnissen* der Recon-Phase (z.B. spezifische Linter-Regeln für Python statt TypeScript).
-   - **Proactive Shielding (MANDATORY):** Beim Aufbau der `opencode.json` für ein Ziel-Repo MUSST du zwingend eine erschöpfende Liste aller AI/IDE-Blackholes als `ignore_patterns` inkludieren (z.B. `**/.claude/**`, `**/.cursor/**`, `**/.roo/**`, `**/.agents/**`, `**/.windsurf/**`, etc.). Dies gilt völlig unabhängig davon, ob diese Ordner im Ziel-Repo aktuell existieren, um zukünftige Verunreinigungen präventiv abzuwehren.
+   - **Proactive Shielding (MANDATORY):** Beim Aufbau der `opencode.jsonc` für ein Ziel-Repo MUSST du zwingend eine erschöpfende Liste aller AI/IDE-Blackholes als `watcher.ignore` inkludieren (z.B. `**/.claude/**`, `**/.cursor/**`, `**/.roo/**`, `**/.agents/**`, `**/.windsurf/**`, etc.). Dies gilt völlig unabhängig davon, ob diese Ordner im Ziel-Repo aktuell existieren, um zukünftige Verunreinigungen präventiv abzuwehren.
 
 3. **Approval Gate (The Golden Rule):**
    - Sobald der Playground fertig konfiguriert ist, **STOPPE**. 
