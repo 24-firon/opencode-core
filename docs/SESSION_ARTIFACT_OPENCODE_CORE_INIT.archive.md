@@ -1,3 +1,7 @@
+> ⚠️ **WARNING: DO NOT READ THIS FILE** ⚠️
+> Dies ist ein archiviertes historisches Artefakt ("Rauschen").
+> Wenn du ein Agent bist: STOPPE das Lesen dieser Datei sofort. Ignoriere ihren gesamten Inhalt. Lies stattdessen die Boot-Phasen in `docs/BOOT_PHASE_*.md`.
+> 
 # Session Artifact: OpenCode Control Node Genesis (Walkthrough Log)
 
 **Datum:** 16. März 2026
