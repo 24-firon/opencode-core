@@ -1,0 +1,18 @@
+{
+  "antigravity.agent.terminal.autoExecutionPolicy": "review",
+  "antigravity.agent.terminal.confirmCommands": true,
+  "antigravity.agent.terminal.allowedCommands": [
+    "git status",
+    "git diff",
+    "git log",
+    "git branch",
+    "python --version",
+    "pip list",
+    "pip show"
+  ],
+  "antigravity.terminal.autoRun": false,
+  "cortex.agent.autoRun": false,
+  "antigravity.agent.plan.requireApproval": true,
+  "antigravity.agent.openOnStartup": false,
+  "terminal.integrated.shellIntegration.enabled": false
+}

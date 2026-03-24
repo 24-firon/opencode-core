@@ -1,0 +1,24 @@
+{
+  // ╔══════════════════════════════════════════════════════════════════╗
+  // ║  tui.json — TUI-Konfiguration (Theme, Keybinds)                 ║
+  // ║  Schema: https://opencode.ai/tui.json                           ║
+  // ║  WICHTIG: "theme" und "keybinds" NICHT in opencode.jsonc!       ║
+  // ║  Seit v1.2.x sind diese Keys dort deprecated.                   ║
+  // ╚══════════════════════════════════════════════════════════════════╝
+  "$schema": "https://opencode.ai/tui.json",
+
+  // Theme: "opencode" | "dracula" | "catppuccin" | "nord" | "github-dark"
+  // und weitere. Vollständige Liste: opencode.ai/docs/tui/
+  "theme": "opencode",
+
+  // Keybinds — nur angeben was überschrieben werden soll.
+  // Alle anderen Keybinds behalten ihre Defaults.
+  "keybinds": {
+    // Agent wechseln (Default: Tab)
+    "switch_agent": "ctrl+a",
+    // Zu Parent-Session zurück
+    "session_parent": "alt+up",
+    // Erste Child-Session betreten
+    "session_child_first": "alt+down"
+  }
+}

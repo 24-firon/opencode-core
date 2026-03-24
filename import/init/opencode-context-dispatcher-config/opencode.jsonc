@@ -1,0 +1,249 @@
+{
+  // ╔══════════════════════════════════════════════════════════════════╗
+  // ║  opencode.jsonc — Projekt-Konfiguration                         ║
+  // ║  Schema: https://opencode.ai/config.json                        ║
+  // ║  Docs:   https://opencode.ai/docs/config/                       ║
+  // ║  Stand:  März 2026 | validiert gegen offizielle Doku            ║
+  // ╚══════════════════════════════════════════════════════════════════╝
+  "$schema": "https://opencode.ai/config.json",
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // CORE MODELS
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Format: "provider/model-id"
+  // "small_model" wird für leichtgewichtige Tasks (z.B. Titel-Generierung)
+  // genutzt — reduziert Kosten erheblich.
+  "model": "anthropic/claude-sonnet-4-5",
+  "small_model": "anthropic/claude-haiku-3-5",
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // AUTOUPDATE
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // "true"    = automatisch updaten
+  // "notify"  = nur benachrichtigen, nicht updaten
+  // false     = stumm ignorieren
+  // HINWEIS: Funktioniert NICHT wenn über Paketmanager (Homebrew etc.) installiert.
+  "autoupdate": "notify",
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // DEFAULT AGENT
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Muss ein "primary"-Agent sein (nicht subagent).
+  // Built-in: "build" (alles erlaubt) oder "plan" (read-only/ask).
+  // Custom-Agenten aus .opencode/agents/*.md sind ebenfalls gültig.
+  "default_agent": "build",
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // INSTRUCTIONS  [MIGRATION: ehemals "customInstructions" — DEPRECATED]
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Akzeptiert: relative Pfade, Glob-Patterns, absolute Pfade, Remote-URLs.
+  // Alle Dateien werden mit AGENTS.md (falls vorhanden) kombiniert.
+  // Pfade sind relativ zum Verzeichnis der Config-Datei.
+  // Remote-URLs: 5s Timeout — bei Nicht-Erreichbarkeit wird übersprungen.
+  //
+  // WICHTIG: Kein "{file:./pfad.md}" hier — das ist Variablensubstitution
+  // für andere Felder. Hier einfach den Pfad-String direkt angeben.
+  "instructions": [
+    ".opencode/rules/global-context.md",
+    ".opencode/rules/code-style.md",
+    ".opencode/rules/agent-dispatch.md",
+    ".opencode/rules/*.md"
+  ],
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // WATCHER  [MIGRATION: ehemals "ignore_patterns" — DEPRECATED]
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Steuert welche Verzeichnisse/Dateien vom File-Watcher ignoriert werden.
+  // Patterns folgen Glob-Syntax. Mindert Noise in großen Repos erheblich.
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      ".git/**",
+      "dist/**",
+      "build/**",
+      ".next/**",
+      ".nuxt/**",
+      "coverage/**",
+      "**/*.log",
+      "**/.DS_Store",
+      ".opencode/snapshots/**",
+      "tmp/**",
+      ".cache/**"
+    ]
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // MCP SERVERS (Model Context Protocol)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Zwei Typen:
+  //   "local"  = lokaler Prozess, der per stdio kommuniziert
+  //   "remote" = HTTPS-Endpunkt (streambasiert, kein lokaler Prozess nötig)
+  //
+  // Variablensubstitution: {env:VAR_NAME} für API-Keys — NIEMALS Klartext!
+  // "enabled": false  = deaktiviert, bleibt aber konfiguriert (leicht aktivierbar)
+  "mcp": {
+    // Context7 — Bibliotheks-/Framework-Dokumentation live abrufen
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "Authorization": "Bearer {env:CONTEXT7_API_KEY}"
+      },
+      "enabled": true
+    },
+
+    // Filesystem — direkter Dateisystemzugriff für den Agenten
+    "filesystem": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "/workspace"],
+      "enabled": true
+    },
+
+    // Fetch — Web-Seiten abrufen (für Recherche-Tasks)
+    "fetch": {
+      "type": "local",
+      "command": ["uvx", "mcp-server-fetch"],
+      "enabled": true
+    },
+
+    // GitHub — Repository-Zugriff, Issues, PRs
+    "github": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_TOKEN}"
+      },
+      "enabled": false
+    },
+
+    // Beispiel: Org-weiter MCP-Server (Remote, via .well-known bereitgestellt)
+    // Kann in globaler Config aktiviert werden, hier deaktiviert als Template.
+    "org-knowledge-base": {
+      "type": "remote",
+      "url": "https://internal.company.com/mcp",
+      "headers": {
+        "Authorization": "Bearer {env:ORG_MCP_TOKEN}"
+      },
+      "enabled": false
+    }
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // AGENTS (Inline-Konfiguration)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Built-in Agents können hier überschrieben werden.
+  // Für komplexere Agenten: Markdown-Files in .opencode/agents/ verwenden.
+  //
+  // PFLICHT: "description" ist required.
+  // "mode": "primary" | "subagent" | "all"  (Default: "all")
+  // "tools" ist DEPRECATED — stattdessen "permission" verwenden.
+  "agent": {
+    // Build: Standard-Entwicklungsagent — alles erlaubt, niedrige Temperature
+    "build": {
+      "description": "Vollzugriff-Entwicklungsagent für Implementierungen und Code-Änderungen.",
+      "model": "anthropic/claude-sonnet-4-5",
+      "temperature": 0.3,
+      "mode": "primary",
+      "permission": {
+        "edit": "allow",
+        "bash": "ask",
+        "webfetch": "allow"
+      }
+    },
+    // Plan: Read-only Analyse-Agent — macht KEINE Änderungen
+    "plan": {
+      "description": "Analyse- und Planungsagent ohne Schreibzugriff. Ideal für Code-Reviews und Architektur-Entscheidungen.",
+      "model": "anthropic/claude-opus-4-5",
+      "temperature": 0.7,
+      "mode": "primary",
+      "permission": {
+        "edit": "ask",
+        "bash": "ask",
+        "webfetch": "allow"
+      }
+    }
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // PERMISSIONS (Globale Defaults — überschreibbar per Agent)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // "allow" = automatisch erlauben
+  // "ask"   = Benutzer-Bestätigung erforderlich
+  // "deny"  = komplett deaktivieren
+  //
+  // ACHTUNG: OpenCode erlaubt standardmäßig ALLE Operationen!
+  // In produktiven Repos sollte "bash" mindestens "ask" sein.
+  "permission": {
+    "edit": "allow",
+    "bash": "ask",
+    "webfetch": "allow"
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // PROVIDER-KONFIGURATION
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // timeout      = Request-Timeout in ms (false = deaktiviert)
+  // chunkTimeout = Timeout zwischen Stream-Chunks in ms
+  // setCacheKey  = Prompt-Caching aktivieren (Anthropic-Feature)
+  //               → Reduziert Kosten bei wiederholten Instructions erheblich!
+  "provider": {
+    "anthropic": {
+      "timeout": 300000,
+      "chunkTimeout": 30000,
+      "setCacheKey": true
+    }
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // CONTEXT COMPACTION
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // auto     = automatisch komprimieren wenn Context voll (empfohlen: true)
+  // prune    = alte Tool-Outputs entfernen um Tokens zu sparen
+  // reserved = Token-Buffer für Komprimierung (verhindert Overflow)
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 8000
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // SNAPSHOT
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // true  = Änderungen tracken, ermöglicht Undo in der Session (Default)
+  // false = deaktivieren — bei großen Repos / vielen Submodulen sinnvoll
+  //         NACHTEIL: Keine Undo-Funktion in der UI mehr verfügbar.
+  "snapshot": true,
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // SHARING
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // "manual"   = manuell via /share (Default)
+  // "auto"     = jede Session automatisch teilen
+  // "disabled" = Sharing komplett deaktivieren
+  "share": "manual",
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // FORMATTER
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  "formatter": {
+    "prettier": {
+      "disabled": false
+    }
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // DISABLED / ENABLED PROVIDERS
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // disabled_providers: Verhindert Laden auch wenn Env-Vars gesetzt sind.
+  // enabled_providers:  Allowlist — alle anderen werden ignoriert.
+  // Bei Konflikt: disabled_providers hat Vorrang.
+  "disabled_providers": [],
+  "enabled_providers": ["anthropic"],
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // EXPERIMENTAL (aktiv entwickelt — Stabilität nicht garantiert)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Offizielle Docs dokumentieren diesen Block, listen aber keine
+  // stabilen Keys — vor Nutzung in CHANGELOG/Releases prüfen.
+  "experimental": {}
+}
