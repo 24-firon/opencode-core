@@ -1,0 +1,39 @@
+---
+name: memory-shrink
+description: |
+  Lade diesen Skill, wenn Handover-Dateien, Logs oder Brain-Files zu groß werden und geschrumpft werden müssen.
+
+  MANDATORY SYSTEM RULE - READ IMMEDIATELY:
+  1. Ordner .claude, .agent, .gemini NIEMALS berühren, lesen oder löschen.
+  2. Dein Arbeitsbereich ist NUR .opencode und der Produktivcode.
+  3. Nutze immer absolute Pfade für read/write. Grep statt Guessing.
+  4. Nutze das task-Tool für komplexe Jobs.
+  5. Stoppe und frage nach Erlaubnis vor destruktiven Bash-Befehlen (rm, drop).
+---
+
+# 🗜️ Das 4-Tier Memory & Shrink Protocol
+
+## 🎯 Zweck
+Handover-Dateien wachsen unweigerlich. Um Token-Timeouts und Kontext-Verwirrung zu verhindern, MÜSSEN sie iterativ geschrumpft werden.
+ABER: KIs haben eine toxische Tendenz, wertvollen Kontext beim "Aufräumen" blind zu vernichten. Diese Regel stoppt das.
+
+## ⚖️ Das eiserne Gesetz: "Archive First, Shrink Later"
+Ehe auch nur ein einziges Wort aus einer aktiven Handover-Datei gelöscht oder zusammengefasst wird, gilt zwingend diese Reihenfolge:
+1. **Sichern:** Die Vollversion der Datei wird zwingend archiviert (z.B. in `_ARCHIVE/` oder `.opencode/archive/`) und committet.
+2. **Review:** Der Agent erstellt einen Entwurf (Draft/Diff) der gekürzten Datei.
+3. **Approval:** Der Operator MUSS den Entwurf prüfen. Erst nach explizitem "Go" darf die aktive Datei abgesaugt werden.
+
+## 🍰 Das 4-Tier Relevanz-Modell (Wie geschrumpft wird)
+Wenn ein Abschnitt in die Vergangenheit rückt, wird er nach diesem Raster abgewertet und gekürzt:
+
+- **Tier 1 (Gegenwart / Aktueller Sprint):**
+  - Status: Volle Details, Code-Schnipsel, exakte Terminal-Outputs, Architekturentscheidungen. Nichts wird gekürzt.
+- **Tier 2 (Jüngste Vergangenheit / Aktuell extrem relevant):**
+  - Status: Zusammenfassung auf das Wesentliche.
+  - Formatierung: Bulletpoints. Was wurde gemacht, welche Systeme waren primär betroffen.
+- **Tier 3 (Ältere Historie / Nur noch kontextuell relevant):**
+  - Status: Stark kondensiert auf 2 Sätze.
+  - Formatierung: Nur noch "Warum wurde es entwickelt?" und "Welchen Einfluss hat es auf die aktuelle Architektur?" (Sinn der Existenz).
+- **Tier 4 (Abgeschlossen / Inaktiver Ballast):**
+  - Status: Physisch aus der aktiven Datei GELÖSCHT.
+  - Routing: Existiert nur noch in der eingefrorenen Volldatei im Archiv. Im aktiven Handover wird es nicht mehr erwähnt. Ein Pointer existiert im Archiv-Index.
