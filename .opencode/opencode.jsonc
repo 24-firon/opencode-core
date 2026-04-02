@@ -5,7 +5,12 @@
   "autoupdate": "notify",
   "default_agent": "build",
   "instructions": [
-    ".opencode/rules/*.md"
+    ".opencode/rules/*.md",
+    "REPO_BRIEFING.md",
+    "RULE_REGISTRY.md",
+    "docs/DECISION_LOG.md",
+    "docs/SESSION_HANDOVER.md",
+    "docs/TASK_LIST.md"
   ],
   "watcher": {
     "ignore": [
@@ -49,7 +54,32 @@
   "permission": {
     "edit": "allow",
     "bash": "ask",
-    "webfetch": "allow"
+    "webfetch": "allow",
+    "skill": {
+      "*": "deny",
+      "agent-batching": "allow",
+      "code-review": "allow",
+      "code-simplifier": "allow",
+      "cleanup-and-harvest": "allow",
+      "doc-harvester-protocol": "allow",
+      "find-bugs": "allow",
+      "git-policy": "allow",
+      "handover-protocol": "allow",
+      "knowledge-extraction-plugin": "allow",
+      "knowledge-router": "allow",
+      "memory-shrink": "allow",
+      "multi-agent-orchestration": "allow",
+      "secrets-management": "allow",
+      "security-review": "allow",
+      "skill-constructor": "allow",
+      "skill-creator": "allow",
+      "skill-scanner": "allow",
+      "testing-protocols": "allow",
+      "three-zone-workflow": "allow",
+      "ui-ux-pro-max": "allow",
+      "verification-before-completion": "allow",
+      "viron-stack-constraints": "allow"
+    }
   },
   "compaction": {
     "auto": true,

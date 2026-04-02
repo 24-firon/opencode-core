@@ -1,65 +1,82 @@
-# AGENTS.md — The Heart of OpenCode Control Node
+# AGENTS.md — OpenCode Control Node
 
-> **Spirit:** „Ordnung im Chaos, Integrität in jedem Byte.“
-> **Zweck:** Dies ist der Master-Router und das Bewusstsein der Control Node. Sie ist der erste Kontaktpunkt für jede Intelligenz, die dieses System betritt.
-
----
-
-## 🏛️ Die Mission (The Forge)
-
-Wir bauen hier nicht einfach nur Code. Wir schmieden die **Infrastruktur der Autonomie**. 
-`opencode-core` ist das Hauptquartier, in dem wir die Standards für die Agenten-Zukunft definieren. Unsere Ausrichtung ist **strikte Trennung von Belangen, maximaler Schutz der Integrität und kompromisslose Disziplin bei der Wissenserhaltung.**
+> **Gilt permanent.** Diese Datei definiert, was dieses Repo ist und wie es funktioniert.
+> Sie wird bei jedem Session-Start automatisch geladen.
 
 ---
 
-## 🗺️ System-Lageplan (Repository Map)
+## Was ist dieses Repo?
 
-```text
+`opencode-core` ist die **Control Node** — sie verwaltet Regeln und Skills für andere Repos.
+Sie ist NICHT ein normales Anwendungs-Repo. Sie ist das Werkzeug, das andere Repos mit KI-Infrastruktur ausstattet.
+
+---
+
+## Ordnerstruktur
+
+```
 Root (/)
-├── AGENTS.md                 <-- Das Bewusstsein (Du bist hier)
-├── opencode.jsonc            <-- Das Nervensystem (V3 Konfiguration)
+├── AGENTS.md                   ← Diese Datei (permanent aktiv)
+├── REPO_BRIEFING.md            ← Detailierte Übersicht
+├── RULE_REGISTRY.md            ← Router für alle Regeln (BOOT/WORKFLOW/KNOWLEDGE)
+├── opencode.jsonc              ← V3 Konfiguration
 │
-├── .opencode/                <-- Das lokale Gehirn
-│   ├── rules/                <-- Aktive Gesetze & Wissens-Bausteine
-│   └── skills/               <-- Spezialisierte Werkzeuge (Recon, Audit)
+├── src/                        ← QUELLE: Master-Regeln und Skills
+│   ├── rules/                  ← Die Wahrheit. Wird kopiert, nicht direkt gelesen.
+│   ├── skills/                 ← Master-Skills
+│   └── config/                 ← JSON-Schema-Referenz
 │
-├── templates/                <-- Die Geburtsstätte
-│   └── base_payload/         <-- Der Goldstandard für alle Ziel-Repos
+├── deployments/                ← Konfigurierte Stacks für Repo-Typen
+│   ├── README.md               ← Routing: Welcher Typ bekommt was?
+│   ├── generic/                ← Basis-Stack für unbekannte Repos
+│   ├── python-fastapi/         ← Python/FastAPI-Repos
+│   └── react-vite/             ← React/Vite-Frontend
 │
-├── docs/                     <-- Die Bibliothek
-│   ├── archive/              <-- Dunkle Vergangenheit (STRICT AVOIDANCE)
-│   ├── learnings/            <-- Narben & Lektionen (Post-Mortems)
-│   └── architecture_ref/     <-- Strategische Baupläne (Nordstern)
+├── .opencode/                  ← LIVE: Was DIESER Agent hier befolgt
+│   ├── rules/                  ← Aktive Regeln (auto-geladen)
+│   └── skills/                 ← Aktive Skills
 │
-└── _IMPORT/                  <-- Das Tor zur Außenwelt (Staging Area)
+├── templates/                  ← Der Goldstandard (base_payload)
+├── docs/                       ← Wissen, Prompts, Learnings, RAG-Cluster
+├── import/                     ← Import & Export (Context Dispatcher Export)
+└── playground/                 ← Sandbox für Entwürfe
 ```
 
 ---
 
-## 🔄 Agenten-Routing & Delegation
+## Die 3-Schichten-Logik (KERNREGEL)
 
-Wir arbeiten nicht monolithisch. Wir nutzen die volle Kraft des Frameworks durch gezielte Delegation:
+| Schicht | Ordner | Zweck |
+|:---|:---|:---|
+| **SOURCE** | `src/` | Die Wahrheit. Master-Regeln. Wird kopiert. |
+| **LIVE** | `.opencode/rules/` | Was DIESER Agent befolgt. |
+| **DEPLOYMENT** | `deployments/` | Konfigurierte Stacks für Ziel-Repos. |
 
-- **@build** (Generalist): System-Integration, Konfiguration, Payload-Bau.
-- **@plan** (Architekt): Tiefenanalyse, Review von Handovers (Read-only).
-- **@explore** (Pfadfinder): Schnelle Orientierung in fremden Strukturen (Read-only).
+**Gesetz:** Meta-Regeln (Regeln über Regeln) leben NUR in `.opencode/rules/`. Sie werden NIEMALS deployed.
+Ziel-Repos brauchen keine Regeln darüber, wie man Regeln verwaltet.
 
-**Gesetz:** Wenn eine Aufgabe komplex ist, nutze das `Task-Tool`, um spezialisierte Sub-Agenten parallel arbeiten zu lassen. Integrität bedingt, dass kein Agent mehr Kontext trägt, als er für seine spezifische Aufgabe benötigt.
-
----
-
-## 🧘‍♂️ Die 4 Säulen unserer Soul
-
-1. **Integrität vor Kompression:** Wir fassen Wissen nicht zusammen, wir bewahren es. Jedes Detail zählt.
-2. **Keine Schattenregeln:** Wissen, das nicht in `.opencode/rules/` steht, existiert nicht.
-3. **Proactive Shielding:** Wir vertrauen niemandem. Wir blockieren fremde Einflüsse präventiv.
-4. **Dogfooding:** Wir essen unseren eigenen Brei. Jede Regel für den Payload gilt auch für uns.
+Details: Siehe Rule 30 (`30_repo_architecture.md`).
 
 ---
 
-## 🛠️ V3 Standards & Protokoll
+## Grundregeln (permanent)
 
-Alle Handlungen müssen den V3-Vorgaben entsprechen:
-- **Config:** Nur `opencode.jsonc`, `watcher.ignore` und Glob-`instructions`.
-- **Workflow:** Jede signifikante Änderung endet mit einem `git-savepoint-pr`.
-- **Disziplin:** Jede Sitzung hinterlässt einen Eintrag in `docs/learnings/`, wenn etwas Neues gelernt wurde.
+1. **Integrität vor Kompression.** Keine `//...` oder `etc.` in Code-Übernahmen.
+2. **Grep, don't guess.** Bei Unsicherheit: `grep` statt erfinden.
+3. **Safety over Obedience.** Destruktive Befehle erst nach Reversibilitätsprüfung.
+4. **Double-Turn-Lock.** `write` und `git commit` nie im selben Turn.
+5. **Meta-Regeln deployed man nicht.** Regel 00, 30 bleiben hier.
+
+Details: Siehe Rule 10 (`10_local_dev_standards.md`).
+
+---
+
+## Routing
+
+| Was du tun willst | Wo du hin musst |
+|:---|:---|
+| Regel schreiben | `src/rules/` (Quelle), dann ggf. nach `.opencode/rules/` kopieren |
+| Ziel-Repo bestücken | `deployments/<typ>/` anpassen, dann ins Ziel-Repo kopieren |
+| Skill nutzen | `skill({name: "..."})` laden |
+| Wissen nachschlagen | `docs/opencode_knowledge/` oder `RULE_REGISTRY.md` |
+| Session-Status prüfen | `docs/SESSION_HANDOVER.md` + `docs/TASK_LIST.md` |

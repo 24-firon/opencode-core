@@ -1,0 +1,38 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "snapshot": false,
+
+  "watcher": {
+    "ignore": [
+      "**/.git/**",
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/.next/**",
+      "**/.vite/**",
+      "**/coverage/**",
+      "**/.eslintcache/**",
+      "**/.claude/**",
+      "**/.cursor/**",
+      "**/.roo/**",
+      "**/.agents/**",
+      "**/.windsurf/**",
+      "**/.aider/**",
+      "**/.continue/**",
+      "**/.codeium/**",
+      "**/.gemini/**",
+      "**/.opencode-agent/**",
+      "**/.cline/**"
+    ]
+  },
+
+  "instructions": [
+    ".opencode/rules/*.md"
+  ],
+
+  "permission": {
+    "bash": "ask",
+    "edit": "ask",
+    "webfetch": "allow"
+  }
+}
